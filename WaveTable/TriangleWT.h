@@ -18,7 +18,7 @@ public:
 		unsigned i;
 		for (i=0; i<length/2; i++)
 			operator [](i)=2.0/(length/2)*i-1.0;
-		for (; i<length-1; i++)
+		for (; i<length; i++)
 			operator [](i)=-2.0/(length/2-1)*i+2.0;
 	}
 

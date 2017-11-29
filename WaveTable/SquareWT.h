@@ -18,7 +18,7 @@ public:
 		unsigned i;
 		for (i=0; i<length/2; i++)
 			operator [](i)=1;
-		for (; i<length-1; i++)
+		for (; i<length; i++)
 			operator [](i)=-1;
 	}
 
