@@ -9,6 +9,7 @@
 #define TRIANGLEWT_H_
 
 #include "WaveTable.h"
+#include <cmath>
 
 class TriangleWT: public WaveTable
 {
@@ -19,7 +20,7 @@ public:
 		for (i=0; i<length/2; i++)
 			operator [](i)=2.0/(length/2)*i-1.0;
 		for (; i<length; i++)
-			operator [](i)=-2.0/(length/2-1)*i+2.0;
+			operator [](i)=-2.0/(length/2)*i+2.0;
 	}
 
 };

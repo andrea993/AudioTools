@@ -16,13 +16,9 @@ class SinWT: public WaveTable
 public:
 	SinWT(unsigned length=1024): WaveTable(length)
 	{
-		float dt=1.0/length;
-		float t=0;
+		double dt=1.0/(length+1.0);
 		for (unsigned i=0; i<length; i++)
-		{
-			operator [](i)=sin(2*M_PI*t);
-			t+=dt;
-		}
+			operator [](i)=sin(2*M_PI*i*dt);
 	}
 
 };
