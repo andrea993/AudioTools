@@ -1,2 +1,2 @@
 # AudioTools
-General audio tools
+Audio Programming tools and utility, work in progress
