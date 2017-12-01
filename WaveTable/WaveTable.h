@@ -17,19 +17,13 @@ public:
 	WaveTable(unsigned length=1024, float period=2*M_PI): T(period), w(length) {}
 	WaveTable(const std::vector<float> &wave, float period=2*M_PI): T(period), w(wave) {}
 
-	unsigned Length() const
-	{
-		return w.size();
-	}
+	unsigned Length() const { return w.size(); }
+	float Period() const { return T; }
+	void setPeriod(float period) { T=period; }
+	void setWave(const std::vector<float> &wave) { w=wave; }
 
-	float& operator[](unsigned i)
-	{
-		return w[i];
-	}
-	float operator[](unsigned i) const
-	{
-		return w[i];
-	}
+	float& operator[](unsigned i) {	return w[i]; }
+	float operator[](unsigned i) const { return w[i]; }
 
 	float operator()(double t) const
 	{
