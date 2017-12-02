@@ -11,10 +11,11 @@
 #include "WaveTable.h"
 #include <cmath>
 
-class NoiseWhiteWT: public WaveTable
+template <class TP>
+class NoiseWhiteWT: public WaveTable<TP>
 {
 public:
-	NoiseWhiteWT(unsigned length=1024): WaveTable(length)
+	NoiseWhiteWT(unsigned length=1024): WaveTable<TP>(length)
 	{
 		for (unsigned i=0; i<length; i++)
 			operator [](i)=2*(rand()/static_cast<float>(RAND_MAX))-1;

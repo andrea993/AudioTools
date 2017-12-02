@@ -11,10 +11,11 @@
 #include "WaveTable.h"
 #include <cmath>
 
-class SinWT: public WaveTable
+template <class TP>
+class SinWT: public WaveTable<TP>
 {
 public:
-	SinWT(unsigned length=1024): WaveTable(length)
+	SinWT(unsigned length=1024): WaveTable<TP>(length)
 	{
 		double dt=1.0/(length+1.0);
 		for (unsigned i=0; i<length; i++)

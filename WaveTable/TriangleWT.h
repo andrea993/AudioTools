@@ -11,10 +11,11 @@
 #include "WaveTable.h"
 #include <cmath>
 
-class TriangleWT: public WaveTable
+template <class TP>
+class TriangleWT: public WaveTable<TP>
 {
 public:
-	TriangleWT(unsigned length=1024): WaveTable(length)
+	TriangleWT(unsigned length=1024): WaveTable<TP>(length)
 	{
 		unsigned i;
 		for (i=0; i<length/2; i++)

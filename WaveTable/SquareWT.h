@@ -10,10 +10,11 @@
 
 #include "WaveTable.h"
 
-class SquareWT: public WaveTable
+template <class TP>
+class SquareWT: public WaveTable<TP>
 {
 public:
-	SquareWT(unsigned length=1024): WaveTable(length)
+	SquareWT(unsigned length=1024): WaveTable<TP>(length)
 	{
 		unsigned i;
 		for (i=0; i<length/2; i++)
