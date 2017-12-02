@@ -9,7 +9,7 @@
 #define NOISEPINKWT_H_
 
 #include "WaveTable.h"
-#include "Filter.h"
+#include "../Filter.h"
 #include <cmath>
 
 class NoisePinkWT : public WaveTable

@@ -19,8 +19,11 @@ public:
 
 	unsigned Length() const { return w.size(); }
 	float Period() const { return T; }
+	std::vector<float> ConstData() const { return w; }
+	std::vector<float> Data() { return w; }
 	void setPeriod(float period) { T=period; }
 	void setWave(const std::vector<float> &wave) { w=wave; }
+
 
 	float& operator[](unsigned i) {	return w[i]; }
 	float operator[](unsigned i) const { return w[i]; }

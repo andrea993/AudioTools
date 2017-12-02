@@ -22,7 +22,7 @@ public:
 		std::vector<double> b;
 		std::vector<double> a;
 
-		unsigned Order() const { return std::max(b.size(), a.size()); }
+		unsigned Order() const { return std::max(b.size(), a.size())-1; }
 	};
 
 	struct FilterState
@@ -55,7 +55,7 @@ public:
 
 	float filter(float u)
 	{
-		unsigned N=c.Order();
+		unsigned N=c.Order()+1;
 
 		if (N == 0)
 			throw std::logic_error("Filter: this filter is not initialized");
