@@ -121,7 +121,7 @@ public:
 
 	float Value(double t, double releasedAt = -1) // if releaseAt is negative it assumes that the key is pressed
 	{
-		if (releasedAt < 0)
+		if (releasedAt > 0)
 		{
 			t-=releasedAt;
 			if (t > e.release_dur)
