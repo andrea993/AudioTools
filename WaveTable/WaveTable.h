@@ -23,15 +23,29 @@ public:
 	float Period() const { return T; }
 	std::vector<float> ConstData() const { return w; }
 	std::vector<float> Data() { return w; }
-	Filter<TP>* Filter() { return filt; }
-	Filter<TP>* Filter() const { return filt; }
+	Filter<TP>* getFilterPtr() { return filt; }
+	Filter<TP> getFilterConst() const { return *filt; }
 	void setPeriod(float period) { T=period; }
 	void setWave(const std::vector<TP> &wave) { w=wave; }
-	void setFilter(const Filter<TP>* filter) { filt=filter; }
+	void setFilter(const Filter<TP> &filter) { filt=new Filter(filter); }
 
 
 	TP& operator[](unsigned i) {	return w[i]; }
 	TP operator[](unsigned i) const { return w[i]; }
+	WaveTable<TP> operator= (const WaveTable<TP> &wavetable)
+	{
+		w = wavetable.w;
+		T = wavetable.T;
+		if (filt != nullptr)
+		{
+			delete filt;
+			filt = nullptr;
+		}
+		if (wavetable.filt != nullptr)
+			filt = new Filter(wavetable.filt);
+
+		return *this;
+	}
 
 	TP operator()(double t) const
 	{
@@ -49,7 +63,7 @@ public:
 		else
 			y=(y0-y1)/(t0-t1)*(tL-t0)+y0;
 
-		if (filt != nullptr && filt->Order()>=0)
+		if (filt != nullptr)
 			y=filt->filter(y);
 
 		return y;
