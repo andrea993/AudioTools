@@ -14,13 +14,13 @@ template <class TP>
 class SquareWT: public WaveTable<TP>
 {
 public:
-	SquareWT(unsigned length=1024): WaveTable<TP>(length)
+	SquareWT<TP>(unsigned length=1024): WaveTable<TP>(length)
 	{
 		unsigned i;
 		for (i=0; i<length/2; i++)
-			operator [](i)=1;
+			(*this)[i]=1;
 		for (; i<length; i++)
-			operator [](i)=-1;
+			(*this)[i]=-1;
 	}
 
 };

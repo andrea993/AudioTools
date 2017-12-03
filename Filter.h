@@ -12,34 +12,35 @@
 #include <stdexcept>
 #include <initializer_list>
 
+struct FilterCoeff
+{
+	FilterCoeff(const std::vector<double>& b, const std::vector<double>& a={}): a(a),b(b) {}
+	FilterCoeff(const std::initializer_list<double>& b={}, const std::initializer_list<double>& a={}): a(a),b(b) {}
+	std::vector<double> b;
+	std::vector<double> a;
+
+	int Order() const { return std::max(b.size(), a.size())-1; }
+};
+
+template <class TPS>
+struct FilterState
+{
+	FilterState<TPS>(unsigned u_size=0, unsigned y_size=0): u_state(u_size), y_state(y_size) {}
+	FilterState<TPS>(const FilterCoeff& coeff)
+	{
+		u_state=std::vector<TPS>(coeff.b.size() > 0 ? coeff.b.size()-1 : 0, 0);
+		y_state=std::vector<TPS>(coeff.a.size() > 0 ? coeff.a.size()-1 : 0, 0);
+	}
+
+	std::vector<TPS> u_state;
+	std::vector<TPS> y_state;
+};
+
 template <class TP>
 class Filter
 {
 public:
-	struct FilterCoeff
-	{
-		FilterCoeff(const std::vector<double>& b, const std::vector<double>& a={}): a(a),b(b) {}
-		FilterCoeff(const std::initializer_list<double>& b={}, const std::initializer_list<double>& a={}): a(a),b(b) {}
-		std::vector<double> b;
-		std::vector<double> a;
 
-		unsigned Order() const { return std::max(b.size(), a.size())-1; }
-	};
-
-	template <class TPS>
-	struct FilterState
-	{
-		FilterState<TPS>(unsigned u_size=0, unsigned y_size=0): u_state(u_size), y_state(y_size) {}
-		FilterState<TPS>(const FilterCoeff& coeff)
-		{
-			u_state=std::vector<TP>(coeff.b.size() > 0 ? coeff.b.size()-1 : 0, 0);
-			y_state=std::vector<TP>(coeff.a.size() > 0 ? coeff.a.size()-1 : 0, 0);
-		}
-
-		std::vector<TPS> u_state;
-		std::vector<TPS> y_state;
-
-	};
 
 	Filter<TP>(const FilterCoeff& coeff={}, const FilterState<TP> &state={}): c(coeff), s(state)
 	{
@@ -115,7 +116,7 @@ public:
 		s=state;
 	}
 
-	unsigned Order() const { return c.Order(); }
+	int Order() const { return c.Order(); }
 	FilterCoeff Coeff() const { return c; }
 	FilterState<TP> State() const { return s; }
 

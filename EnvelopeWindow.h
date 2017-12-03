@@ -29,13 +29,13 @@ struct Envelope
 	float tauFactor;
 };
 
-
+template <class TP>
 class EnvelopeWindow
 {
 private:
 	Envelope e;
-	WaveTable att_dec;
-	WaveTable rel;
+	WaveTable<TP> att_dec;
+	WaveTable<TP> rel;
 
 
 	void WriteWave()
@@ -68,7 +68,7 @@ private:
 				att_dec[i]=-(e.attack_max-e.decay_min)/e.decay_dur*t+e.attack_max;
 				break;
 			case Envelope::Type::exponential:
-				att_dec[i]=(1-e.decay_min)*exp(-t/(e.decay_dur/e.tauFactor))+e.decay_min;
+				att_dec[i]=(e.attack_max-e.decay_min)*exp(-t/(e.decay_dur/e.tauFactor))+e.decay_min;
 				break;
 			}
 
@@ -96,25 +96,27 @@ private:
 public:
 	const double WINSR = 200; // window sampling rate
 
-	EnvelopeWindow() {}
-	EnvelopeWindow(const Envelope& envelope):
+	EnvelopeWindow<TP>() {}
+	EnvelopeWindow<TP>(const Envelope& envelope):
 		e(envelope),
-		att_dec(WINSR*(e.attack_dur+e.decay_dur), e.attack_dur+e.decay_dur),
-		rel(WINSR*e.release_dur,e.release_dur)
+		att_dec(WINSR*(e.attack_dur+e.decay_dur), e.attack_dur+e.decay_dur,true),
+		rel(WINSR*e.release_dur,e.release_dur,true)
 	{
 		WriteWave();
 	}
 
-	Envelope Envelope() const { return e; }
+	Envelope getEnvelope() const { return e; }
 	void setEnvelope(const Envelope& envelope)
 	{
 		e=envelope;
 
-		att_dec.Data().resize((WINSR*(e.attack_dur+e.decay_dur)));
+		att_dec.Resize((WINSR*(e.attack_dur+e.decay_dur)));
 		att_dec.setPeriod(e.attack_dur+e.decay_dur);
+		att_dec.setOneShot(true);
 
-		rel.Data().resize(WINSR*e.release_dur);
+		rel.Resize(WINSR*e.release_dur);
 		rel.setPeriod(e.release_dur);
+		rel.setOneShot(true);
 
 		WriteWave();
 	}

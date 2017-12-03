@@ -15,13 +15,13 @@ template <class TP>
 class TriangleWT: public WaveTable<TP>
 {
 public:
-	TriangleWT(unsigned length=1024): WaveTable<TP>(length)
+	TriangleWT<TP>(unsigned length=1024): WaveTable<TP>(length)
 	{
 		unsigned i;
 		for (i=0; i<length/2; i++)
-			operator [](i)=2.0/(length/2)*i-1.0;
+			(*this)[i]=2.0/(length/2)*i-1.0;
 		for (; i<length; i++)
-			operator [](i)=-2.0/(length/2)*i+2.0;
+			(*this)[i]=-2.0/(length/2)*i+2.0;
 	}
 
 };

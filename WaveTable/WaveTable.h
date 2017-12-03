@@ -12,44 +12,46 @@
 #include <vector>
 #include "../Filter.h"
 
-template <class TP>
+template <class TP, class TPF=TP>
 class WaveTable
 {
 public:
-	WaveTable<TP>(unsigned length=1024, float period=2*M_PI, const Filter* filter=nullptr): T(period), w(length), filt(filter){}
-	WaveTable<TP>(const std::vector<float> &wave, float period=2*M_PI, const Filter<TP>* filter=nullptr): T(period), w(wave), filt(filter) {}
+	WaveTable<TP, TPF>(unsigned length=1024, float period=2*M_PI, bool oneShot=false, const Filter<TPF>& filter=Filter<TPF>()):
+		T(period), w(length), oneShot(oneShot), filt(filter) {}
+
+	WaveTable<TP, TPF>(const std::vector<float> &wave, float period=2*M_PI, bool oneShot=false, const Filter<TPF>& filter=Filter<TPF>()):
+		T(period), w(wave), oneShot(oneShot), filt(filter) {}
+
 
 	unsigned Length() const { return w.size(); }
 	float Period() const { return T; }
 	std::vector<float> ConstData() const { return w; }
 	std::vector<float> Data() { return w; }
-	Filter<TP>* getFilterPtr() { return filt; }
-	Filter<TP> getFilterConst() const { return *filt; }
+	Filter<TPF>& getFilter() { return filt; }
+	Filter<TPF> getFilter() const { return filt; }
 	void setPeriod(float period) { T=period; }
 	void setWave(const std::vector<TP> &wave) { w=wave; }
-	void setFilter(const Filter<TP> &filter) { filt=new Filter(filter); }
+	void setFilter(const Filter<TPF> &filter) { filt=filter; }
+	bool isOneShot() const { return oneShot; }
+	void setOneShot(bool oneShot) { this->oneShot = oneShot; }
+	void Resize(unsigned length) { w.resize(length); }
 
 
-	TP& operator[](unsigned i) {	return w[i]; }
+	TP& operator[](unsigned i) { return w[i]; }
 	TP operator[](unsigned i) const { return w[i]; }
-	WaveTable<TP> operator= (const WaveTable<TP> &wavetable)
+
+	TP operator()(double t)
 	{
-		w = wavetable.w;
-		T = wavetable.T;
-		if (filt != nullptr)
+		if (oneShot && t>T)
 		{
-			delete filt;
-			filt = nullptr;
+			if (filt.Order() >= 0)
+				return filt.filter(TP(0));
+
+			return TP(0);
 		}
-		if (wavetable.filt != nullptr)
-			filt = new Filter(wavetable.filt);
 
-		return *this;
-	}
-
-	TP operator()(double t) const
-	{
 		unsigned L=w.size();
+
 		float tL=fmod(t,T)/T*L;
 
 		unsigned t0=floor(tL);
@@ -63,23 +65,17 @@ public:
 		else
 			y=(y0-y1)/(t0-t1)*(tL-t0)+y0;
 
-		if (filt != nullptr)
-			y=filt->filter(y);
+		if (filt.Order() >= 0)
+			y=filt.filter(y);
 
 		return y;
 	}
 
-	virtual ~WaveTable()
-	{
-		if (filt != nullptr)
-			delete filt;
-	}
-
-
 private:
 	float T;
+	bool oneShot;
 	std::vector<TP> w;
-	Filter<TP> *filt;
+	Filter<TPF> filt;
 
 };
 

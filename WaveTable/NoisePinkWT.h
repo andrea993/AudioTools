@@ -19,10 +19,10 @@ class NoisePinkWT : public WaveTable<TP>
 public:
 	NoisePinkWT<TP>(unsigned length=1024): WaveTable<TP>(length)
 	{
-		Filter<TP> rc_filt(Filter<TP>::FilterCoeff({0.5},{1,-0.5}));
+		Filter<TP> rc_filt(FilterCoeff({0.5},{1,-0.5}));
 
 		for (unsigned i=0; i<length; i++)
-			operator [](i)=rc_filt.filter(2*(rand()/static_cast<float>(RAND_MAX))-1);
+			(*this)[i]=rc_filt.filter(2*(rand()/static_cast<float>(RAND_MAX))-1);
 
 	}
 

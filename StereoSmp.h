@@ -8,34 +8,36 @@
 #ifndef STEREOSMP_H_
 #define STEREOSMP_H_
 
+template <class TP=float>
 struct StereoSmp
 {
-	StereoSmp(float left=0, float right=0): left(left), right(right) {}
+	StereoSmp<TP>(TP left=0, TP right=0): left(left), right(right) {}
 
-	friend StereoSmp operator+ (const StereoSmp& a, const StereoSmp& b);
-	friend StereoSmp operator+ (const StereoSmp& a, float b);
-	friend StereoSmp operator- (const StereoSmp& a, const StereoSmp& b);
-	friend StereoSmp operator- (const StereoSmp& a, float b);
-	friend StereoSmp operator* (const StereoSmp& a, const StereoSmp& b);
-	friend StereoSmp operator* (const StereoSmp& a, float b);
-	friend StereoSmp operator/ (const StereoSmp& a, const StereoSmp& b);
-	friend StereoSmp operator/ (const StereoSmp& a, float b);
-	friend bool operator== (const StereoSmp& a, const StereoSmp& b);
 
-	StereoSmp operator=(float a)
+	template <typename TE> friend StereoSmp<TE> operator+ (const StereoSmp<TE>& a, const StereoSmp<TE>& b);
+	template <typename TE> friend StereoSmp<TE> operator+ (const StereoSmp<TE>& a, TE b);
+	template <typename TE> friend StereoSmp<TE> operator- (const StereoSmp<TE>& a, const StereoSmp<TE>& b);
+	template <typename TE> friend StereoSmp<TE> operator- (const StereoSmp<TE>& a, TE b);
+	template <typename TE> friend StereoSmp<TE> operator* (const StereoSmp<TE>& a, const StereoSmp<TE>& b);
+	template <typename TE> friend StereoSmp<TE> operator* (const StereoSmp<TE>& a, TE b);
+	template <typename TE> friend StereoSmp<TE> operator/ (const StereoSmp<TE>& a, const StereoSmp<TE>& b);
+	template <typename TE> friend StereoSmp<TE> operator/ (const StereoSmp<TE>& a, TE b);
+	template <typename TE> friend bool operator== (const StereoSmp<TE>& a, const StereoSmp<TE>& b);
+
+	StereoSmp<TP> operator=(TP a)
 	{
 		left = right = a;
 		return *this;
 	}
 
-	StereoSmp operator+= (const StereoSmp& a)
+	StereoSmp<TP> operator+= (const StereoSmp<TP>& a)
 	{
 		left+=a.left;
 		right+=a.right;
 		return *this;
 	}
 
-	StereoSmp operator+= (float a)
+	StereoSmp<TP> operator+= (TP a)
 	{
 		left+=a;
 		right+=a;
@@ -43,93 +45,102 @@ struct StereoSmp
 	}
 
 
-	StereoSmp operator-= (float a)
+	StereoSmp<TP> operator-= (TP a)
 	{
 		left-=a;
 		right-=a;
 		return *this;
 	}
 
-	StereoSmp operator-= (const StereoSmp& a)
+	StereoSmp<TP> operator-= (const StereoSmp<TP>& a)
 	{
 		left-=a.left;
 		right-=a.right;
 		return *this;
 	}
 
-	StereoSmp operator*= (float a)
+	StereoSmp<TP> operator*= (TP a)
 	{
 		left*=a;
 		right*=a;
 		return *this;
 	}
 
-	StereoSmp operator*= (const StereoSmp& a)
+	StereoSmp<TP> operator*= (const StereoSmp<TP>& a)
 	{
 		left*=a.left;
 		right*=a.right;
 		return *this;
 	}
 
-	StereoSmp operator/= (float a)
+	StereoSmp<TP> operator/= (TP a)
 	{
 		left/=a;
 		right/=a;
 		return *this;
 	}
 
-	StereoSmp operator/= (const StereoSmp& a)
+	StereoSmp<TP> operator/= (const StereoSmp<TP>& a)
 	{
 		left/=a.left;
 		right/=a.right;
 		return *this;
 	}
 
-	float left;
-	float right;
+	TP left;
+	TP right;
 };
 
-StereoSmp operator/ (const StereoSmp& a, const StereoSmp& b)
+template <typename TE>
+StereoSmp<TE> operator/ (const StereoSmp<TE>& a, const StereoSmp<TE>& b)
 {
-	return StereoSmp(a.left/b.left, a.right/b.right);
+	return StereoSmp<TE>(a.left/b.left, a.right/b.right);
 }
 
-StereoSmp operator/ (const StereoSmp& a, float b)
+template <typename TE>
+StereoSmp<TE> operator/ (const StereoSmp<TE>& a, TE b)
 {
-	return StereoSmp(a.left/b, a.right/b);
+	return StereoSmp<TE>(a.left/b, a.right/b);
 }
 
-StereoSmp operator* (const StereoSmp& a, const StereoSmp& b)
+template <typename TE>
+StereoSmp<TE> operator* (const StereoSmp<TE>& a, const StereoSmp<TE>& b)
 {
-	return StereoSmp(a.left*b.left, a.right*b.right);
+	return StereoSmp<TE>(a.left*b.left, a.right*b.right);
 }
 
-StereoSmp operator* (const StereoSmp& a, float b)
+template <typename TE>
+StereoSmp<TE> operator* (const StereoSmp<TE>& a, TE b)
 {
-	return StereoSmp(a.left*b, a.right*b);
+	return StereoSmp<TE>(a.left*b, a.right*b);
 }
 
-StereoSmp operator+ (const StereoSmp& a, const StereoSmp& b)
+template <typename TE>
+StereoSmp<TE> operator+ (const StereoSmp<TE>& a, const StereoSmp<TE>& b)
 {
-	return StereoSmp(a.left+b.left, a.right+b.right);
+	return StereoSmp<TE>(a.left+b.left, a.right+b.right);
 }
 
-StereoSmp operator+ (const StereoSmp& a, float b)
+template <typename TE>
+StereoSmp<TE> operator+ (const StereoSmp<TE>& a, TE b)
 {
-	return StereoSmp(a.left+b, a.right+b);
+	return StereoSmp<TE>(a.left+b, a.right+b);
 }
 
-StereoSmp operator- (const StereoSmp& a, const StereoSmp& b)
+template <typename TE>
+StereoSmp<TE> operator- (const StereoSmp<TE>& a, const StereoSmp<TE>& b)
 {
-	return StereoSmp(a.left-b.left, a.right-b.right);
+	return StereoSmp<TE>(a.left-b.left, a.right-b.right);
 }
 
-StereoSmp operator- (const StereoSmp& a, float b)
+template <typename TE>
+StereoSmp<TE> operator- (const StereoSmp<TE>& a, TE b)
 {
-	return StereoSmp(a.left-b, a.right-b);
+	return StereoSmp<TE>(a.left-b, a.right-b);
 }
 
-bool operator== (const StereoSmp& a, const StereoSmp& b)
+template <typename TE>
+bool operator== (const StereoSmp<TE>& a, const StereoSmp<TE>& b)
 {
 	return a.left == b.left && a.right==b.right;
 }

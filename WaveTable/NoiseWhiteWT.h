@@ -15,10 +15,10 @@ template <class TP>
 class NoiseWhiteWT: public WaveTable<TP>
 {
 public:
-	NoiseWhiteWT(unsigned length=1024): WaveTable<TP>(length)
+	NoiseWhiteWT<TP>(unsigned length=1024): WaveTable<TP>(length)
 	{
 		for (unsigned i=0; i<length; i++)
-			operator [](i)=2*(rand()/static_cast<float>(RAND_MAX))-1;
+			(*this)[i]=2*(rand()/static_cast<float>(RAND_MAX))-1;
 
 	}
 
