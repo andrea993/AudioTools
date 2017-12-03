@@ -54,8 +54,8 @@ public:
 
 		float tL=fmod(t,T)/T*L;
 
-		unsigned t0=floor(tL);
-		unsigned t1=ceil(tL);
+		int t0=floor(tL);
+		int t1=ceil(tL);
 		TP y0=w[t0];
 		TP y1=w[t1%L];
 
