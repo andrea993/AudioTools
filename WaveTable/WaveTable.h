@@ -63,7 +63,7 @@ public:
 		if(t0==t1)
 			y=y0;
 		else
-			y=(y0-y1)/(TP(t0-t1))*(tL-t0)+y0;
+			y=(y0-y1)/(t0-t1)*(tL-t0)+y0;
 
 		if (filt.Order() >= 0)
 			y=filt.filter(y);

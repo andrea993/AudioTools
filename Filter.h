@@ -65,7 +65,7 @@ public:
 		if (N == 0)
 			throw std::logic_error("Filter: this filter is not initialized");
 
-		TP y=u*TP(c.b[0]);
+		TP y=u*c.b[0];
 
 		for (unsigned i=1; i<N; i++)
 		{
@@ -84,7 +84,7 @@ public:
 				ai=c.a[i];
 			}
 
-			y += ui*TP(bi)-yi*TP(ai);
+			y += ui*bi-yi*ai;
 		}
 
 		//update state
