@@ -8,6 +8,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "../Builds/LinuxMakefile/Test.h"
+#include "../Builds/LinuxMakefile/StereoSmp.h"
+#include "../Builds/LinuxMakefile/WaveTable/WaveTable.h"
 #include <iostream>
 //==============================================================================
 /*
@@ -58,8 +60,8 @@ public:
 
     	for (int i=0; i<bufferToFill.numSamples; i++)
     	{
-    		StereoSmp<float> out = myoutput.MakeSample();
-
+    		//StereoSmp<float> out = myoutput.MakeSample();
+    		StereoSmp<float> out = sinwt(100);
     		left[i] = out.left;
 			right[i] = out.right;
 
@@ -99,6 +101,7 @@ private:
     // Your private member variables go here...
 
     Test myoutput;
+    SinWT sinwt<StereoSmp<float>>;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };

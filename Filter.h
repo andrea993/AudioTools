@@ -11,6 +11,8 @@
 #include <vector>
 #include <stdexcept>
 #include <initializer_list>
+#include <limits>
+#include <cmath>
 
 struct FilterCoeff
 {
@@ -63,7 +65,7 @@ public:
 		if (N == 0)
 			throw std::logic_error("Filter: this filter is not initialized");
 
-		TP y=u*c.b[0];
+		TP y=u*TP(c.b[0]);
 
 		for (unsigned i=1; i<N; i++)
 		{
@@ -82,7 +84,7 @@ public:
 				ai=c.a[i];
 			}
 
-			y += ui*bi-yi*ai;
+			y += ui*TP(bi)-yi*TP(ai);
 		}
 
 		//update state
@@ -130,6 +132,10 @@ private:
 		if (c.a.size() > 0)
 		{
 			double a0=c.a[0];
+
+			if (fabs(a0) < std::numeric_limits<double>::epsilon())
+				throw std::logic_error("Filter: a[0] coefficient can't be 0");
+
 
 			for (unsigned i=0; i<c.a.size();i++)
 				c.a[i]/=a0;

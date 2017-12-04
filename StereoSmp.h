@@ -11,7 +11,8 @@
 template <class TP=float>
 struct StereoSmp
 {
-	StereoSmp<TP>(TP left=0, TP right=0): left(left), right(right) {}
+	StereoSmp<TP>(TP left_and_right = 0): left(left_and_right), right(left_and_right) {}
+	StereoSmp<TP>(TP left, TP right): left(left), right(right) {}
 
 
 	template <typename TE> friend StereoSmp<TE> operator+ (const StereoSmp<TE>& a, const StereoSmp<TE>& b);

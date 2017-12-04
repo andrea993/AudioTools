@@ -14,6 +14,7 @@
 #include "WaveTable/SinWT.h"
 #include "WaveTable/WaveTable.h"
 #include "EnvelopeWindow.h"
+#include <iostream>
 
 class Test: public OutputMaker<StereoSmp<float>>
 {
@@ -21,10 +22,10 @@ public:
 	Test() :
 		OutputMaker<StereoSmp<float>>(44100)
 	{
-		Tattack=0.01;
+		Tattack=0.005;
 		Tdecay=0.01;
-		Trelease=1;
-		Tzero=0.5;
+		Trelease=0.8;
+		Tzero=0.2;
 
 		Envelope decay_env;
 		decay_env.attack_dur = Tattack;
@@ -49,6 +50,7 @@ public:
 
 		SampleMade();
 		return y;
+
 	}
 
 private:
@@ -59,13 +61,20 @@ private:
 	float Kick(float t)
 	{
 		if (t <= Tattack + Tdecay)
-			return sinwt(2*M_PI*1000*t)*d_envWin.Value(t);
+			return sinwt(2*M_PI*200*t)*d_envWin.Value(t);
+
 		else if (t <= Trelease)
-			return sinwt(2*M_PI*100*t)*d_envWin.Value(t, Tattack + Tdecay);
+			return sinwt(2*M_PI*70*t)*d_envWin.Value(t, Tattack + Tdecay);
 		else
 			return 0;
 
 	}
+
+
+
+
+
+
 
 };
 
