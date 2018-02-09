@@ -2,7 +2,7 @@
 This is a real time audio framework thinked for writing audio programs and synthetizer
 
 ## Philosophy (KISS)
-The framework wants to be as simple as possibile, you must be able to do everythings in the easyest way.
+The framework wants to be as simple as possibile, you must be able to do everythings in the easiest way.
 
 ## Guidelines
 
